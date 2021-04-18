@@ -1,0 +1,266 @@
+﻿@model List<DatabaseModel>
+@inject Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager
+@if (ViewBag.ErrorMessage != null)
+{
+    <span>@ViewBag.ErrorMessage</span>
+}
+
+
+<form id="form" asp-action="ImportExcel" enctype="multipart/form-data" method="post">
+    <input hidden onchange="handleOnChange()" id="file" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="file" />
+</form>
+
+<script>
+
+    let file = document.getElementById("file");
+    let form = document.getElementById("form");
+    function handleClickImport() {
+        file.click()
+    }
+    function handleOnChange() {
+        form.submit();
+    }
+
+    function handleSelectFilter(e) {
+        console.log(e.target.value);
+        let value = event.target.value;
+        let seachFilter = document.getElementById("searchText");
+        if (value == 6 || value == 7 || value == 8) {
+            seachFilter.setAttribute("placeholder", "dd/mm/yyyy - dd/mm/yyyy")
+        } else {
+            seachFilter.setAttribute("placeholder", "axtar")
+
+        }
+    }
+
+</script>
+@{
+    Layout = null;
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="~/Agentlik/img/logo.jpg">
+    <title>Tables</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Agentlik/css/table.css">
+</head>
+<body>
+
+    <header>
+        <a href="http://eco.gov.az/" class="company_logo" target="_blank">
+            <img src="~/Agentlik/img/logo.jpg" alt="logo">
+        </a>
+        <div>
+            <form asp-action="Index" method="get">
+                <select onchange="handleSelectFilter(event)" name="searchType" id="searchType" class="findBySelection">
+                    <option value="1" disabled selected>Axtarışa ver</option>
+                    <option value="1">Bütün</option>
+                    <option value="2">VÖEN</option>
+                    <option value="3">Yatağın adı</option>
+                    <option value="4">Sahənin adı</option>
+                    <option value="5">Yatağın yerləşdiyi inzibati ərazi</option>
+                    <option value="6">DMAA-nın verilmə tarixi</option>
+                    <option value="7">DMAA-nın bitmə tarixi</option>
+                </select>
+                <input style="width:260px" type="text" name="searchText" id="searchText" class="searchTxtBox">
+                <button type="submit" class="searchBtn">Axtar</button>
+                <div class="btn_container">
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <a class="addUser" href="/Account/GetUserList">İstifadəçilər</a>
+                        <a class="addUser" href="/ExcelImport/Add">Əlavə Et</a>
+
+                    }
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="addUser" href="/Account/Logout">Çıxış et</a>
+
+                    }
+                </div>
+            </form>
+            <form id="form" asp-action="ImportExcel" enctype="multipart/form-data" method="post">
+                <input hidden onchange="handleOnChange()" id="file" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="file" />
+            </form>
+            <button onclick="handleClickImport()" class="searchBtn">Excel Daxil Et</button>
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+
+        </div>
+
+    </header>
+
+    <h4 class="searchResult"></h4>
+
+    <div class="table_container">
+        <table class="table table-hover table-bordered">
+            <!-- table-bordered | table-hover -->
+            <thead class="thead-dark">
+                <tr class="table_header">
+                    <th scope="col" rowspan="2">
+                        Əməliyyatlar
+                    </th>
+                    <th scope="col" rowspan="2">#</th>
+                    <th scope="col" colspan="8 ">
+                        Yataqların və onun sahələrinin adı,
+                        <br>
+                        Yatağı kəşf və ya istismar edən təşkilatın adı,
+                        <br>
+                        İstismara qatıldığı il
+                    </th>
+                    <th scope="col" rowspan="2">
+                        Sənaye mənimsənilməsinin səviyyəsi,
+                        <br>
+                        Müəssisənin illik layihə məhsuldarlığı
+                    </th>
+                    <th scope="col" rowspan="2">
+                        a) Faydalı qazıntının tipi, növü, markası <br>
+                        b) Faydalı komponentlərin zərərli qatışıqların orta miqdarı <br>
+                        c) Ehtiyat hesablanmasının dərinliyi <br>
+                        d) İstismarın maksimal dərinliyi
+                    </th>
+                    <th scope="col" rowspan="2">Ehtiyat kateqoriyası</th>
+                    <th scope="col" rowspan="2">01.01.2019 ilə olan balans ehtiyatları </th>
+                    <th scope="col" colspan="6">01.01.2019 ildə olan balans ehtiyatlarının aşağıdakılar nəticəsində dəyişməsi (hərəkəti)</th>
+                    <th scope="col" rowspan="2">01.01.2020 ilə olan qalıq ehtiyatları</th>
+                    <th scope="col" rowspan="2">Ayrılan sahə, ha</th>
+                    <th scope="col" rowspan="2">VÖEN</th>
+                    <th scope="col" rowspan="2">
+                        a) Təsdiq edilmiş balans ehtiyatlarının cəmi <br>
+                        b) Ehtiyatların təsdiqi, tarixi və protokol №-si
+                    </th>
+                    <th scope="col" rowspan="2">Koordinat</th>
+                    <th scope="col" rowspan="2">Mineral xammal bazasının bərpası üzrə dövlət fonduna ödəmələr. min man</th>
+                    <th scope="col" rowspan="2">Təsdiq olunması barədə məlumat</th>
+                    <th scope="col" rowspan="2">Şərh</th>
+                </tr>
+                <tr>
+
+                    <!-- FIRST PART -->
+                    <th>Yatağın yerləşdiyi inzibati ərazi</th>
+                    <th>Yatağın kodu</th>
+                    <th>Yatağın adı</th>
+                    <th>Sahənin kodu</th>
+                    <th>Sahənin adı</th>
+                    <th>DMAA-nın nömrəsi</th>
+                    <th>DMAA-nın verilmə tarixi</th>
+                    <th>DMAA-nın bitmə tarixi</th>
+
+
+                    <!-- SECOND PART -->
+                    <th>
+                        <p class="verticalTxt">Hasilat</p>
+                    </th>
+                    <th>
+                        <p class="verticalTxt">Hasilat zamanı itkilər</p>
+                    </th>
+                    <th>
+                        <p class="verticalTxt">Kəşfiyyat (+ və ya -)</p>
+                    </th>
+                    <th>
+                        <p class="verticalTxt">Yenidən qiymətləndirilməsi (+ və ya -)</p>
+                    </th>
+                    <th>
+                        <p class="verticalTxt">Mötəbərliyi təsdiqlənməyən ehtiyatların silinməsi</p>
+                    </th>
+                    <th>
+                        <p class="verticalTxt">Texniki sərhədlərin dəyişməsi və digər səbəblərə görə</p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="taable">
+
+                <!-- COUNT OF COLUMN -->
+
+                <tr class="centerTxt">
+                    <th></th>
+                    <th>1</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>21</td>
+                    <td>22</td>
+                    <td>23</td>
+                    <td>24</td>
+                    <td>25</td>
+                    <td>26</td>
+                </tr>
+
+                @{
+                    int i = 2;
+                }
+                <!-- DATA START FROM HERE -->
+                @foreach (var item in Model)
+                {
+                    <tr class="centerTxt">
+                        <th>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Edit</a>
+                        </th>
+                        <th>@i</th>
+                        <td>@item.YataginInzibatiErazisi</td>
+                        <td>@item.YataginKodu</td>
+                        <td>@item.YataginAdi</td>
+                        <td>@item.SaheninKodu</td>
+                        <td>@item.SaheninAdi</td>
+                        <td>@item.DMAANomresi</td>
+                        <td>@item.DMAAQeydiyyatTarixi?.ToString("MM/dd/yyyy")</td>
+                        <td>@item.DMAABitmeTarix?.ToString("MM/dd/yyyy")</td>
+                        <td>@item.SenayeMenimsenilmesiSeviyyesi</td>
+                        <td>@item.FaydaliQazintiNovu</td>
+                        <td>@item.EhtiyyatinKategoryasi</td>
+                        <td>@item.BalansEhtiyyatlari2019</td>
+                        <td>@item.Hasilat</td>
+                        <td>@item.HasilatZamaniItkiler</td>
+                        <td>@item.Kesfiyyat</td>
+                        <td>@item.YenidenQiymetlendirme</td>
+                        <td>@item.MoteberliyiTesdiqlenmeyen</td>
+                        <td>@item.SerhedlerinDeyishmesiVeDiger</td>
+                        <td>@item.QaliqEhtiyyatlari2020</td>
+                        <td>@item.AyrilanSahe</td>
+                        <td>@item.VOEN</td>
+                        <td>@item.TesdiqEdilmishBalansCemi</td>
+                        <td>
+                            <a download="" href="~/img/@item.Koordinat">Yukle</a>
+                        </td>
+                        <td>@item.MineralXammalBazasiBerpasi</td>
+                        <td>@item.TesdiqOlunmaseBarede</td>
+                        <td>@item.Serh</td>
+                    </tr>
+                    i++;
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+</body>
+</html>

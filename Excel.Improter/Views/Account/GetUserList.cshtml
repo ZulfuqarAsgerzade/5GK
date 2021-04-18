@@ -1,0 +1,105 @@
+﻿@model List<UserListOutPut>
+@{
+    ViewData["Title"] = "GetUserList";
+    Layout = null;
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<link rel="stylesheet" href="~/Agentlik/css/user.css">
+<link rel="stylesheet" href="~/Agentlik//css/table.css">
+<header>
+    <a asp-controller="ExcelImport" asp-action="Index" class="company_logo">
+        <img src="~/Agentlik/img/logo.jpg" alt="logo">
+    </a>
+    @*<div>
+            <select name="services" id="services" class="findBySelection">
+                <option value="diabledValue" disabled selected>Axtarışa ver</option>
+                <option value="all_data">Bütün</option>
+                <option value="voen">VÖEN</option>
+                <option value="source_code">Yatağın adı</option>
+                <option value="area_code">Sahənin adı</option>
+                <option value="area_code">Yatağın yerləşdiyi inzibati ərazi</option>
+                <option value="area_code">DMAA-nın verilmə tarixi</option>
+                <option value="area_code">DMAA-nın bitmə tarixi</option>
+                <option value="area_code">DMAA-nın bitmə tarixi</option>
+                <option value="area_code">5gk ödənişi</option>
+            </select>
+            <input type="text" name="" id="" class="searchTxtBox">
+            <button class="searchBtn">Axtar</button>
+            <div class="btn_container">
+                <a class="addUser" href="./user_add.html">İstifadəçi əlavə et</a>
+            </div>
+        </div>*@
+
+</header>
+<div style="padding-left:430px">
+    <a asp-action="CreateUser" as class="addUser">İstifadəçi Əlavə et</a>
+
+</div>
+
+<table class="table table-hover user_table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">İstifadəçi adı</th>
+            <th scope="col">Şifrəsi</th>
+            <th scope="col">Selahiyyetler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <th scope="row">#</th>
+                <td>@user.UserName</td>
+                <td>@user.Password</td>
+                <td>
+                    @{
+                        string htmlTemp = $"<h2>Username: {user.UserName}</h2>" +
+                    $"<ul>";
+                        foreach (var item in user.Roles)
+                        {
+                            htmlTemp = htmlTemp + $"<li>{item}</li>";
+                        }
+                        htmlTemp = htmlTemp + "</ul>";
+                    }
+                    <button onclick="handleOpenModal('@user.UserName', '@htmlTemp')" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Ətraflı bax
+                    </button>
+
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@{
+    string selectedUser = "Salam";
+}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="modal-body" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bağla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    handleOpenModal = (username, html) => {
+        let modalBody = document.getElementById("modal-body");
+        modalBody.innerHTML = html;
+    }
+</script>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>

@@ -1,0 +1,175 @@
+﻿@model DatabaseModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>table</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Agentlik/css/registration.css">
+    <link rel="stylesheet" href="~/Agentlik/css/data.css">
+    <link rel="stylesheet" href="~/Agentlik/css/table.css">
+
+</head>
+<body>
+    <div style="padding-left:430px">
+        <a asp-action="Index" as class="addUser">Geri Don</a>
+
+    </div>
+    <form class="col-md-3 addInfo_form" enctype="multipart/form-data" asp-action="Edit">
+        @*<div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Dəyişiləcək məlumatın sıra sayı</label>
+            <input type="text" asp-for="" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>*@
+        <input type="hidden" asp-for="Id" />
+        @if (User.IsInRole("Supporter") || User.IsInRole("Administrator"))@*Yer teki fealiyyeti*@
+        {
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hasilat</label>
+                <input asp-for="Hasilat" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Şərh</label>
+                <textarea asp-for="Serh" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+        }
+
+        @if (User.IsInRole("Marketolog") || User.IsInRole("Administrator"))@*Maliyye*@
+        {
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">VÖEN</label>
+                <input asp-for="VOEN" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Mineral xammal bazasının bərpası üzrə dövlət fonduna ödəmələr. min man</label>
+                <input asp-for="MineralXammalBazasiBerpasi" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+        }
+        @if (User.IsInRole("Expert") || User.IsInRole("Administrator"))
+        {
+            <button onclick="handleClickFileUpload()" type="button" class="btn btn-outline-secondary"><i class="fas fa-upload"></i> Koordinat Yüklə</button>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Yatağın yerləşdiyi inzibati ərazi</label>
+                <input asp-for="YataginInzibatiErazisi" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Yatağın kodu</label>
+                <input asp-for="YataginKodu" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Yatağın adı</label>
+                <input asp-for="YataginAdi" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Sahənin kodu</label>
+                <input asp-for="SaheninKodu" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Sahənin adı</label>
+                <input asp-for="SaheninAdi" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">DMAA-nın nömrəsi</label>
+                <input asp-for="DMAANomresi" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">DMAA-nın verilmə tarixi</label>
+                <input asp-for="DMAAQeydiyyatTarixi" type="date" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">DMAA-nın bitmə tarixi</label>
+                <input asp-for="DMAABitmeTarix" type="date" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">
+                    Sənaye mənimsənilməsinin səviyyəsi,
+                    <br>
+                    Müəssisənin illik layihə məhsuldarlığı
+                </label>
+                <input asp-for="SenayeMenimsenilmesiSeviyyesi" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">
+                    a) Faydalı qazıntının tipi, növü, markası
+                    <br>
+                    b) Faydalı komponentlərin zərərli qatışıqların orta miqdarı
+                    <br>
+                    c) Ehtiyat hesablanmasının dərinliyi
+                    <br>
+                    d) İstismarın maksimal dərinliyi
+                </label>
+                <input asp-for="FaydaliQazintiNovu" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Ehtiyat kateqoriyası</label>
+                <input asp-for="EhtiyyatinKategoryasi" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">01.01.2019 ilə olan balans ehtiyatları</label>
+                <input asp-for="BalansEhtiyyatlari2019" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Hasilat zamanı itkilər</label>
+                <input asp-for="HasilatZamaniItkiler" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Kəşfiyyat (+ və ya -)</label>
+                <input asp-for="Kesfiyyat" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Yenidən qiymətləndirilməsi (+ və ya -)</label>
+                <input asp-for="YenidenQiymetlendirme" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Mötəbərliyi təsdiqlənməyən ehtiyatların silinməsi</label>
+                <input asp-for="MoteberliyiTesdiqlenmeyen" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Texniki sərhədlərin dəyişməsi və digər səbəblərə görə</label>
+                <input asp-for="SerhedlerinDeyishmesiVeDiger" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">01.01.2020 ilə olan balans ehtiyatları</label>
+                <input asp-for="QaliqEhtiyyatlari2020" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Ayrılan sahə, ha</label>
+                <input asp-for="AyrilanSahe" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">
+                    a) Təsdiq edilmiş balans ehtiyatlarının cəmi
+                    <br>
+                    b) Ehtiyatların təsdiqi, tarixi və protokol №-si
+                </label>
+                <input asp-for="TesdiqEdilmishBalansCemi" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Təsdiq olunması barədə məlumat</label>
+                <input asp-for="TesdiqOlunmaseBarede" type="text" class="form-control" id="exampleInputPassword1">
+            </div>
+         }
+
+
+        <input type="file" id="file" hidden name="file" />
+        <br />
+        <br />
+
+        <button type="submit" class="btn btn-primary login_submit">Düzəliş et</button>
+    </form>
+    <script>
+        function handleClickFileUpload() {
+            document.getElementById("file").click();
+        }
+    </script>
+</body>
+</html>
+

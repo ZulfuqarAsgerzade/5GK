@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../img/logo_blank.jpg">
+    <title>Tables</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/table.css">
+    
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="company_logo">
+            <img src="../img/logo.jpg" alt="logo">
+        </a>
+        <div>
+            <select name="services" id="services" class="findBySelection">
+                <option value="diabledValue" disabled selected>Axtarışa ver</option>
+                <option value="all_data">Bütün</option>
+                <option value="voen">VÖEN</option>
+                <option value="source_code">Yatağın adı</option>
+                <option value="area_code">Sahənin adı</option>
+                <option value="area_code">Yatağın yerləşdiyi inzibati ərazi</option>
+                <option value="area_code">DMAA-nın verilmə tarixi</option>
+                <option value="area_code">DMAA-nın bitmə tarixi</option>
+                <option value="area_code">DMAA-nın bitmə tarixi</option>
+                <option value="area_code">5gk ödənişi</option>
+              </select>
+              <input type="text" name="" id="" class="searchTxtBox">
+              <button class="searchBtn">Axtar</button>
+              <div class="btn_container">
+                  <a class="addUser" href="./user_list.html">İstifadəçilər</a>
+                  <a class="addUser" href="./column_add.html">Əlavə et</a>
+                  <a class="addUser" href="./data_add.html">Düzəliş et</a>
+              </div>
+        </div>
+
+    </header>
+
+    <h4 class="searchResult"></h4>
+
+    <div class="table_container">
+        <table class="table table-hover table-bordered">  <!-- table-bordered | table-hover -->
+            <thead class="thead-dark">
+                <tr class="table_header">
+                    <th scope="col" rowspan="2">#</th>
+                    <th scope="col" colspan="8 ">
+                        Yataqların və onun sahələrinin adı,
+                        <br>
+                        Yatağı kəşf və ya istismar edən təşkilatın adı,
+                        <br> 
+                        İstismara qatıldığı il
+                    </th>
+                    <th scope="col" rowspan="2">
+                        Sənaye mənimsənilməsinin səviyyəsi,
+                        <br>
+                        Müəssisənin illik layihə məhsuldarlığı
+                    </th>
+                    <th scope="col" rowspan="2">
+                        a) Faydalı qazıntının tipi, növü, markası <br>
+                        b) Faydalı komponentlərin zərərli qatışıqların orta miqdarı <br>
+                        c) Ehtiyat hesablanmasının dərinliyi <br>
+                        d) İstismarın maksimal dərinliyi
+                    </th>
+                    <th scope="col" rowspan="2">Ehtiyat kateqoriyası</th>
+                    <th scope="col" rowspan="2">01.01.2019 ilə olan balans ehtiyatları </th>
+                    <th scope="col" colspan="6">01.01.2019 ildə olan balans ehtiyatlarının aşağıdakılar nəticəsində dəyişməsi (hərəkəti)</th>
+                    <th scope="col" rowspan="2">01.01.2020 ilə olan qalıq ehtiyatları</th>
+                    <th scope="col" rowspan="2">Ayrılan sahə, ha</th>
+                    <th scope="col" rowspan="2">VÖEN</th>
+                    <th scope="col" rowspan="2">
+                        a) Təsdiq edilmiş balans ehtiyatlarının cəmi <br>
+                        b) Ehtiyatların təsdiqi, tarixi və protokol №-si
+                    </th>
+                    <th scope="col" rowspan="2">Koordinat</th>
+                    <th scope="col" rowspan="2">Mineral xammal bazasının bərpası üzrə dövlət fonduna ödəmələr. min man</th>
+                    <th scope="col" rowspan="2">Təsdiq olunması barədə məlumat</th>
+                    <th scope="col" rowspan="2">Şərh</th>
+                </tr>
+                <tr>
+
+                    <!-- FIRST PART -->
+                    <th>Yatağın yerləşdiyi inzibati ərazi</th>
+                    <th>Yatağın kodu</th>
+                    <th>Yatağın adı</th>
+                    <th>Sahənin kodu</th>
+                    <th>Sahənin adı</th>
+                    <th>DMAA-nın nömrəsi</th>
+                    <th>DMAA-nın verilmə tarixi</th>
+                    <th>DMAA-nın bitmə tarixi</th>
+                    
+
+                    <!-- SECOND PART -->
+                    <th>
+                        <p class="verticalTxt">Hasilat</p>
+                    </th>
+                    <th>
+                        <p class="verticalTxt">Hasilat zamanı itkilər</p>
+                    </th>
+                    <th>
+                        <p class="verticalTxt">Kəşfiyyat (+ və ya -)</p>
+                    </th>
+                    <th>
+                        <p class="verticalTxt">Yenidən qiymətləndirilməsi (+ və ya -)</p>
+                    </th>
+                    <th>
+                        <p class="verticalTxt">Mötəbərliyi təsdiqlənməyən ehtiyatların silinməsi</p>
+                    </th>
+                    <th>
+                        <p class="verticalTxt">Texniki sərhədlərin dəyişməsi və digər səbəblərə görə</p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="taable">
+
+                <!-- COUNT OF COLUMN -->
+
+                <tr class="centerTxt">
+                    <th>1</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>21</td>
+                    <td>22</td>
+                    <td>23</td>
+                    <td>24</td>
+                    <td>25</td>
+                    <td>26</td>
+                </tr>
+
+                <!-- DATA START FROM HERE -->
+
+                <tr class="centerTxt">
+                    <th>2</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>

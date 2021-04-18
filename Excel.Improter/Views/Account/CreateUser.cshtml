@@ -1,0 +1,47 @@
+﻿@model CreateUserInput
+@{
+    ViewData["Title"] = "CreateUser";
+    Layout = null;
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+<link rel="stylesheet" href="~/Agentlik/css/registration.css">
+
+<div class="login">
+    <form class="col-md-3" asp-action="CreateUser">
+
+        <!-- INPUTS -->
+        <div class="mb-3">
+            <label asp-for="UserName" class="form-label">İstifadəçi adı</label>
+            <input asp-for="UserName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label">Şifrə</label>
+            <input asp-for="Password" class="form-control" id="exampleInputPassword1">
+        </div>
+
+        <!-- CHECKBOX-->
+        <ul class="login_checkbox">
+            @{int i = 0; }
+            @foreach (var role in Model.Roles)
+            {
+
+                <li>
+                    <div class="form-check">
+                        <input class="form-check-input" asp-for="Roles[i].IsSelected" type="checkbox" id="flexCheckAdmin">
+                        <input type="hidden" asp-for="Roles[i].Name"/>
+                        <label class="form-check-label" for="flexCheckAdmin">
+                            @role.NormalName
+                        </label>
+                    </div>
+                </li>
+                i++;
+            }
+        </ul>
+
+        <!-- SUBMIT -->
+        <button type="submit" class="btn btn-primary login_submit">Təsdiq et</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
